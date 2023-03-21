@@ -192,6 +192,8 @@ TOKEN :
    |  <EOF> {return false;}	
 	}
 
+
+	
 	void estructura():
 	{
 	}
@@ -205,30 +207,34 @@ TOKEN :
 
 	void crearVars():
 	{
+	  Token varT;
 	  String var;
 	}
 	{
 	  < VARS >
 	  (
-	    < ID > ","{
-	      var =token.image;
+	    varT=< ID > ","{
+	      var =varT.image;
 	      variables.put(var, null); }
 	  )*
 	  (
-	    < ID > ";"{
-	      var =token.image;
+	    varT=< ID > ";"{
+	      var =varT.image;
 	      variables.put(var, null); }
 	  )
 	}
 	void comandAssingTo():
 	{
+	Token variableT;
+	Token valorT;
+
 	  String variable;
 	  int valor;
 	}
 	{
-	  < ASSIGNTO> ":" < NUM >{ try 
+	  < ASSIGNTO> ":" valorT=< NUM >{ try 
 				{
-					valor = Integer.parseInt(token.image);
+					valor = Integer.parseInt(valorT.image);
 				} 
 				catch (NumberFormatException ee) 
 				{
@@ -236,8 +242,8 @@ TOKEN :
 				}
 				 }
 
-	   "," < ID> {
-	      variable =token.image;
+	   "," variableT=< ID> {
+	      variable =variableT.image;
 	      if(variables.containsKey(variable)) {
 	        variables.put(variable, valor);
 	      }else {
@@ -248,6 +254,36 @@ TOKEN :
 	  
 	}
 	
+
+
+	void comandPick():
+	{
+	  
+	  Token objT;
+	  String obj;
+	  int valor;
+	  
+	}
+	{
+	  < PICK > valor=varOrNum() "," (objT=< BALLOONS> |objT=< CHIPS>)
+
+	  {
+	  obj= objT.image;
+	  if (obj.equals("Chips")) {
+	    world.pickChips(valor);
+	  }
+	  else if(obj.equals("Balloons")) {
+	    world.grabBalloons(valor);
+	  }
+
+
+	  }
+	  }
+	  
+
+
+
+
 
 
 	
