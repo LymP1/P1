@@ -227,6 +227,79 @@ TOKEN :
 	{
 	Token variableT;
 	Token valorT;
+	}
+
+	void commandFace():
+	{
+	  Token var;
+	}
+	{
+	  (
+	    < FACE > ":" var=< LAT >
+	    {
+	      String x = var.image;
+	      int orientacion = world.getFacing();
+	      if (x.equals("north")) {
+	        if (orientacion == SOUTH) {
+	          world.turnRight();
+	          world.turnRight();
+	        }
+	        else if (orientacion == EAST) {
+	          world.turnRight();
+	          world.turnRight();
+	          world.turnRight();
+	        }
+	        else if (orientacion == WEST) {
+	          world.turnRight();
+	        }
+	      }
+	      else if (x.equals("south")) {
+			if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			}
+			else if (orientacion == EAST) {
+			  world.turnRight();
+			}
+			else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+			}
+		  }
+		  else if (x.equals("east")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+		    }
+		    else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+		    }
+	      }
+		  else if (x.equals("west")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+		    }
+		    else if (orientacion == EAST) {
+			  world.turnRight();
+			  world.turnRight();
+		    }
+	      }
+	    }
+	  )
+	}
+
+
 
 	  String variable;
 	  int valor;
@@ -282,9 +355,159 @@ TOKEN :
 	  
 
 
+	void jumpToThe():
+	{
+	  
+	  Token objT;
+	  int valor;
+	  
+	}
+	{
+	  (		< JUMPTOTHE > ":" valor=varOrNum() ","  objT=< DIR >
+		{
+		  int orientacion = world.getFacing();
+		  if (objT.equals("front")) {
+		  	if (orientacion == NORTH) {
+			world.moveVertically(-valor, True);
+		  	}
+		  	else if (orientacion == SOUTH) {
+			world.moveVertically(valor, True);
+		  	}
+		  	else if (orientacion == EAST) {
+			world.moveHorizontally(valor, True);
+		  	}
+		  	else if (orientacion == WEST) {
+			world.moveHorizontally(-valor, True);
+		  	}
+		  }
+		  else if (objT.equals("back")) {
+			if (orientacion == NORTH) {
+			world.moveVertically(valor, True);
+		  	}
+		  	else if (orientacion == SOUTH) {
+			world.moveVertically(-valor, True);
+		  	}
+		  	else if (orientacion == EAST) {
+			world.moveHorizontally(-valor, True);
+		  	}
+		  	else if (orientacion == WEST) {
+			world.moveHorizontally(valor, True);
+		  	}
+		  }
+		  else if (objT.equals("right")) {
+			if (orientacion == NORTH) {
+			world.moveHorizontally(valor, True);
+		  	}
+		  	else if (orientacion == SOUTH) {
+			world.moveHorizontally(-valor, True);
+		  	}
+		  	else if (orientacion == EAST) {
+			world.moveVertically(valor, True);
+		  	}
+		  	else if (orientacion == WEST) {
+			world.moveVertically(-valor, True);
+		  	}
+		  }
+		  else if (objT.equals("left")) {
+			if (orientacion == NORTH) {
+			world.moveHorizontally(-valor, True);
+		  	}
+		  	else if (orientacion == SOUTH) {
+			world.moveHorizontally(valor, True);
+		  	}
+		  	else if (orientacion == EAST) {
+			world.moveVertically(-valor, True);
+		  	}
+		  	else if (orientacion == WEST) {
+			world.moveVertically(valor, True);
+		  	}
+		  }
+		}
+	  )
+	}
 
-
-
+void jumpInDir():
+	{
+	  int valor;
+	  Token lat;
+	}
+	{
+	  (
+	    < JUMPINDIR > ":" valor=varOrNum() "," lat=< LAT >
+	    {
+	      String x = lat.image;
+	      int orientacion = world.getFacing();
+	      if (x.equals("north")) {
+	        if (orientacion == SOUTH) {
+	          world.turnRight();
+	          world.turnRight();
+	          world.moveForward(valor, True);
+	        }
+	        else if (orientacion == EAST) {
+	          world.turnRight();
+	          world.turnRight();
+	          world.turnRight();
+	          world.moveForward(valor, True);
+	        }
+	        else if (orientacion == WEST) {
+	          world.turnRight();
+	          world.moveForward(valor, True);
+	        }
+	      }
+	      else if (x.equals("south")) {
+			if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+			}
+			else if (orientacion == EAST) {
+			  world.turnRight();
+			  world.moveForward(valor, True);
+			}
+			else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+			}
+		  }
+		  else if (x.equals("east")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+		    else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+	      }
+		  else if (x.equals("west")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+		    else if (orientacion == EAST) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.moveForward(valor, True);
+		    }
+	      }
+	    }
+	  )
+	}
 
 	
 	void comandGoto ():
@@ -423,9 +646,60 @@ TOKEN :
 	}
 
 	
+	void conditionCanMoveInDir():
+	{
+	  Token objT;
+	  int valor;
+	}
+	{
+	  (	    < CANMOVEINDIR > ":" valor=varOrNum() ","  objT=< LAT >
+	    {
+	      
+		}
+	  )
+	}
 
+	void conditionCanJumpInDir():
+	{
+	  Token objT;
+	  int valor;
+	}
+	{
+	  (
+	    < CANJUMPINDIR > ":" valor=varOrNum() ","  objT=< LAT >
+	    {
+	      
+		}
+	  )
+	}
 
+	void conditionCanMoveToThe():
+	{
+	  Token objT;
+	  int valor;
+	}
+	{
+	  (
+	    < CANMOVETOTHE > ":" valor=varOrNum() ","  objT=< DIR >
+	    {
+	      
+		}
+	  )
+	}
 
+	void conditionCanJumpToThe():
+	{
+	  Token objT;
+	  int valor;
+	}
+	{
+	  (
+	    < CANJUMPTOTHE > ":" valor=varOrNum() ","  objT=< DIR >
+	    {
+	      
+		}
+	  )
+	}
 
 void boulean():
 {
