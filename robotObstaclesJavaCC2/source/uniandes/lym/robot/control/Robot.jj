@@ -13,7 +13,7 @@ Modificado por Silvia Takahashi
 options 
 {
   
-	LOOKAHEAD=2; 
+	LOOKAHEAD=1; 
 	IGNORE_CASE=true;
 	STATIC = false;
 	
@@ -167,7 +167,7 @@ TOKEN :
 	{
 	  
 		(		  (
-		   < D> "(" ")" {world.turnRight();salida = "Command: Turnright";}
+		   "RIGHT" "(" ")" {world.turnRight();salida = "Command: Turnright";}
 		| 	<MOV>  "(" x=num() ")" {world.moveForward(x,false);salida = "Command: Moveforward ";}  
 		| 	<HOP>  "(" x=num() ")" {world.moveForward(x,true);salida = "Command:Jumpforward ";}
 		| 	<GO>  "(" x=num() "," y=num()")" {world.setPostion(x,y);salida = "Command:GO ";}  
@@ -185,72 +185,21 @@ TOKEN :
 			sistema.printOutput(salida);
 			return true;
 		})+
-   | estructura() { return true;}
    | comandGoto() { return true;}
    | comandMove() { return true;}
    | comandTurn() { return true;}
-   |  <EOF> {return false;}	
-	}
-
-	void estructura():
-	{
-	}
-	{
-	  < ROBOT_R >
-	  (
-	    crearVars()	  )?
-	  comandAssingTo()
-	  comandGoto()
-	}
-
-	void crearVars():
-	{
-	  String var;
-	}
-	{
-	  < VARS >
-	  (
-	    < ID > ","{
-	      var =token.image;
-	      variables.put(var, null); }
-	  )*
-	  (
-	    < ID > ";"{
-	      var =token.image;
-	      variables.put(var, null); }
-	  )
-	}
-	void comandAssingTo():
-	{
-	  String variable;
-	  int valor;
-	}
-	{
-	  < ASSIGNTO> ":" < NUM >{ try 
-				{
-					valor = Integer.parseInt(token.image);
-				} 
-				catch (NumberFormatException ee) 
-				{
-					throw new Error("Number out of bounds: "+token.image+" !!");
-				}
-				 }
-
-	   "," < ID> {
-	      variable =token.image;
-	      if(variables.containsKey(variable)) {
-	        variables.put(variable, valor);
-	      }else {
-	        throw new Error("La variable no existe");
-	      }
-	      	       
-	     }
-	  
-	}
-	
+   |  <EOF> {return false;}
 
 
-	
+
+
+   
+   
+
+
+    	
+	}
+
 	void comandGoto ():
 	{
 	  int var;
@@ -289,6 +238,76 @@ TOKEN :
 	  }
 	)
 	}
+
+	void commandFace():
+	{
+	  Token var;
+	}
+	{
+	  (	    < FACE > ":" var=< LAT >
+	    {
+	      String x = var.image;
+	      int orientacion = world.getFacing();
+	      if (x.equals("north")) {
+	        if (orientacion == SOUTH) {
+	          world.turnRight();
+	          world.turnRight();
+	        }
+	        else if (orientacion == EAST) {
+	          world.turnRight();
+	          world.turnRight();
+	          world.turnRight();
+	        }
+	        else if (orientacion == WEST) {
+	          world.turnRight();
+	        }
+	      }
+	      else if (x.equals("south")) {
+			if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			}
+			else if (orientacion == EAST) {
+			  world.turnRight();
+			}
+			else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+			}
+		  }
+		  else if (x.equals("east")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+		    }
+		    else if (orientacion == WEST) {
+			  world.turnRight();
+			  world.turnRight();
+		    }
+	      }
+		  else if (x.equals("west")) {
+		    if (orientacion == NORTH) {
+			  world.turnRight();
+			  world.turnRight();
+			  world.turnRight();
+		    }
+		    else if (orientacion == SOUTH) {
+			  world.turnRight();
+		    }
+		    else if (orientacion == EAST) {
+			  world.turnRight();
+			  world.turnRight();
+		    }
+	      }
+	    }
+	  )
+	}
+
 
 	void comandMove ():
 	{
