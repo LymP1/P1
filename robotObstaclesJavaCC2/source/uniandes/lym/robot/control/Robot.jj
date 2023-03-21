@@ -308,7 +308,8 @@ TOKEN :
 	  )
 	}
 
-
+/** prueba prueba
+*/
 	void comandMove ():
 	{
 	  int var;
